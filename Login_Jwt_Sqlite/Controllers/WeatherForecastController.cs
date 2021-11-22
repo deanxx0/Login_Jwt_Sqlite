@@ -10,7 +10,7 @@ namespace Login_Jwt_Sqlite.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize(Policy = "AdminOnly")]
+    [Authorize(Policy = "MemberOrAdmin")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

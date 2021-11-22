@@ -25,7 +25,7 @@ namespace Login_Jwt_Sqlite.Controllers
         public async Task<ActionResult> Login(string userName, string password)
         {
             var user = _userDbService.FindUser(userName);
-            if (user == null) return NotFound();
+            if (user == null) return Unauthorized();
             if (user.Password != password) return Unauthorized();
 
             var tokenHandler = new JwtSecurityTokenHandler();

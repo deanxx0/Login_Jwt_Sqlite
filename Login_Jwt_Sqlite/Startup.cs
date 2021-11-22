@@ -62,6 +62,7 @@ namespace Login_Jwt_Sqlite
             {
                 options.AddPolicy("MemberOnly", policy => policy.RequireClaim("Member"));
                 options.AddPolicy("AdminOnly", policy => policy.RequireClaim("Admin"));
+                options.AddPolicy("MemberOrAdmin", policy => policy.RequireAssertion(context => context.User.HasClaim(c => (c.Type == "Member" || c.Type == "Admin"))));
             });
 
             services.AddSingleton<UserDbService>();
