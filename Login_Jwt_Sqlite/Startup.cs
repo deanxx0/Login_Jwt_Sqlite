@@ -60,8 +60,8 @@ namespace Login_Jwt_Sqlite
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("MemberOnly", policy => policy.RequireClaim("Member", "true"));
-                options.AddPolicy("AdminOnly", policy => policy.RequireClaim("Admin", "true"));
+                options.AddPolicy("MemberOnly", policy => policy.RequireClaim("Member"));
+                options.AddPolicy("AdminOnly", policy => policy.RequireClaim("Admin"));
             });
 
             services.AddSingleton<UserDbService>();
