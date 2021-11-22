@@ -31,34 +31,16 @@ namespace Login_Jwt_Sqlite.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes("aaaaaaaaaaaaaaaaaaaa");
 
-            var tokenDescriptor = new SecurityTokenDescriptor();
-            if (user.UserClaim.ToString() == "Member")
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                tokenDescriptor = new SecurityTokenDescriptor
+                Subject = new ClaimsIdentity(new Claim[]
                 {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                        new Claim(ClaimTypes.Name, user.UserName),
-                        new Claim("Member", "true"),
-                    }),
-                    Expires = DateTime.UtcNow.AddDays(1),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                };
-            }
-            if (user.UserClaim.ToString() == "Admin")
-            {
-                tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                        new Claim(ClaimTypes.Name, user.UserName),
-                        new Claim("Member", "true"),
-                        new Claim("Admin", "true"),
-                    }),
-                    Expires = DateTime.UtcNow.AddDays(1),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                };
-            }
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(user.UserClaim.ToString(), "true"),
+                }),
+                Expires = DateTime.UtcNow.AddDays(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
