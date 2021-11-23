@@ -17,6 +17,12 @@ using System.Threading.Tasks;
 
 namespace Login_Jwt_Sqlite
 {
+
+    public static class PolicyNames
+    {
+        public static readonly string MemberOnly = "MemberOnly";
+    }
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -60,7 +66,7 @@ namespace Login_Jwt_Sqlite
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("MemberOnly", policy => policy.RequireClaim("Member"));
+                options.AddPolicy(PolicyNames.MemberOnly, policy => policy.RequireClaim("Member"));
                 options.AddPolicy("AdminOnly", policy => policy.RequireClaim("Admin"));
                 options.AddPolicy("MemberOrAdmin", policy => policy.RequireAssertion(context => context.User.HasClaim(c => (c.Type == "Member" || c.Type == "Admin"))));
             });
