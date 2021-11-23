@@ -9,14 +9,12 @@ namespace Login_Jwt_Sqlite.Models
     {
         public string UserName { get; set; }
         public string Password { get; set; }
-        public bool Remember { get; set; }
         public UserClaims UserClaim { get; set; }
 
-        public CreateUser(string userName, string password, bool remember, UserClaims userClaim)
+        public CreateUser(string userName, string password, UserClaims userClaim)
         {
             UserName = userName;
             Password = password;
-            Remember = remember;
             UserClaim = userClaim;
         }
     }

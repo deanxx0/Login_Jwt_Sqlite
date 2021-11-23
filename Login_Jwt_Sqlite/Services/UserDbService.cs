@@ -28,8 +28,9 @@ namespace Login_Jwt_Sqlite.Services
                 createTableCmd.CommandText =
                     $"CREATE TABLE {_userTableName}" +
                     $"(Id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    $"UserName TEXT, Password TEXT, " +
-                    $"Remember BOOL, UserClaim TEXT, " +
+                    $"UserName TEXT, " +
+                    $"Password TEXT, " +
+                    $"UserClaim TEXT, " +
                     $"CreatedAt TEXT)";
                 createTableCmd.ExecuteNonQuery();
             }
@@ -46,11 +47,10 @@ namespace Login_Jwt_Sqlite.Services
                     var insertUserCmd = connection.CreateCommand();
                     insertUserCmd.CommandText =
                         $"INSERT INTO {_userTableName} " +
-                        $"(UserName, Password, Remember, UserClaim, CreatedAt) " +
+                        $"(UserName, Password, UserClaim, CreatedAt) " +
                         $"VALUES" +
                         $"('{createUser.UserName}', " +
                         $"'{createUser.Password}', " +
-                        $"'{createUser.Remember}', " +
                         $"'{createUser.UserClaim}', " +
                         $"datetime('now', 'localtime'))";
                     insertUserCmd.ExecuteNonQuery();
@@ -73,27 +73,17 @@ namespace Login_Jwt_Sqlite.Services
                 {
                     while (reader.Read())
                     {
-                        var remember = false;
-                        if (reader.GetString(3).ToLower() == "false")
-                        {
-                            remember = false;
-                        }
-                        if (reader.GetString(3).ToLower() == "true")
-                        {
-                            remember = true;
-                        }
-
                         var userClaim = UserClaims.Member;
-                        if (reader.GetString(4) == UserClaims.Member.ToString())
+                        if (reader.GetString(3) == UserClaims.Member.ToString())
                         {
                             userClaim = UserClaims.Member;
                         }
-                        if (reader.GetString(4) == UserClaims.Admin.ToString())
+                        if (reader.GetString(3) == UserClaims.Admin.ToString())
                         {
                             userClaim = UserClaims.Admin;
                         }
                         
-                        user = new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), remember, userClaim, reader.GetDateTime(5));
+                        user = new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), userClaim, reader.GetDateTime(4));
                     }
                 }
             }
@@ -117,27 +107,17 @@ namespace Login_Jwt_Sqlite.Services
                 {
                     while (reader.Read())
                     {
-                        var remember = false;
-                        if (reader.GetString(3).ToLower() == "false")
-                        {
-                            remember = false;
-                        }
-                        if (reader.GetString(3).ToLower() == "true")
-                        {
-                            remember = true;
-                        }
-
                         var userClaim = UserClaims.Member;
-                        if (reader.GetString(4) == UserClaims.Member.ToString())
+                        if (reader.GetString(3) == UserClaims.Member.ToString())
                         {
                             userClaim = UserClaims.Member;
                         }
-                        if (reader.GetString(4) == UserClaims.Admin.ToString())
+                        if (reader.GetString(3) == UserClaims.Admin.ToString())
                         {
                             userClaim = UserClaims.Admin;
                         }
 
-                        users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), remember, userClaim, reader.GetDateTime(5)));
+                        users.Add(new User(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), userClaim, reader.GetDateTime(4)));
                     }
                 }
             }

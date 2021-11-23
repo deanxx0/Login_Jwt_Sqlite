@@ -1,6 +1,7 @@
 ﻿using Login_Jwt_Sqlite.Models;
 using Login_Jwt_Sqlite.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,11 @@ namespace Login_Jwt_Sqlite.Controllers
     public class LoginController : ControllerBase
     {
         private readonly UserDbService _userDbService;
-        public LoginController(UserDbService userDbService)
+        private readonly string _jwtSeretKey;
+
+        public LoginController(UserDbService userDbService, IConfiguration configuration)
         {
+            _jwtSeretKey = configuration.GetValue<string>("JwtSecretKey");
             _userDbService = userDbService;
         }
 
@@ -30,7 +34,7 @@ namespace Login_Jwt_Sqlite.Controllers
             if (user.Password != password) return Unauthorized();
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("aaaaaaaaaaaaaaaaaaaa");
+            var key = Encoding.ASCII.GetBytes(_jwtSeretKey);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

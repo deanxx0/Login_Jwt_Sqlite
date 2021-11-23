@@ -30,8 +30,8 @@ namespace Login_Jwt_Sqlite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-
-            var key = Encoding.ASCII.GetBytes("aaaaaaaaaaaaaaaaaaaa");
+            var jwtSecretKey = Configuration.GetValue<string>("JwtSecretKey");
+            var key = Encoding.ASCII.GetBytes(jwtSecretKey);
 
             services.AddAuthentication(x =>
             {

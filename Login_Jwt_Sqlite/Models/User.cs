@@ -16,7 +16,6 @@ namespace Login_Jwt_Sqlite.Models
         public int Key { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
-        public bool Remember { get; set; }
         public UserClaims UserClaim { get; set; }
         public DateTime CreatedAt { get; set; }
 
@@ -25,12 +24,11 @@ namespace Login_Jwt_Sqlite.Models
 
         }
 
-        public User(int key, string userName, string password, bool remember, UserClaims userClaim, DateTime createdAt)
+        public User(int key, string userName, string password, UserClaims userClaim, DateTime createdAt)
         {
             Key = key;
             UserName = userName;
             Password = password;
-            Remember = remember;
             UserClaim = userClaim;
             CreatedAt = createdAt;
         }
