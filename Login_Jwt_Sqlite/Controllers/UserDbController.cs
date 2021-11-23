@@ -33,6 +33,9 @@ namespace Login_Jwt_Sqlite.Controllers
             return Ok();
         }
 
+        [HttpGet("User")]
+        public ActionResult FindAllUser() => Ok(_userDbService.FindAllUsers());
+
         [HttpGet("User/{userName}")]
         public ActionResult FindUser(string userName)
         {
