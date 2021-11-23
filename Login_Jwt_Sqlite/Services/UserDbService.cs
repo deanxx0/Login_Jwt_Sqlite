@@ -97,6 +97,11 @@ namespace Login_Jwt_Sqlite.Services
                     }
                 }
             }
+            if (user.UserName == null)
+            {
+                Console.WriteLine("No matched User");
+                return null;
+            }
             return user;
         }
 
@@ -146,6 +151,11 @@ namespace Login_Jwt_Sqlite.Services
             {
                 connection.Open();
                 user = FindUser(userName);
+                if (user == null)
+                {
+                    Console.WriteLine("Delete user fail");
+                    return null;
+                }
 
                 var deleteCmd = connection.CreateCommand();
                 deleteCmd.CommandText = $"DELETE FROM {_userTableName} WHERE UserName = '{userName}'";
