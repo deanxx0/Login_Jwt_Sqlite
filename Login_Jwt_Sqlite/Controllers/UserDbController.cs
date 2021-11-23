@@ -22,32 +22,85 @@ namespace Login_Jwt_Sqlite.Controllers
         [HttpPost("UsersTable")]
         public ActionResult CreateUsersTable()
         {
-            _userDbService.CreateUsersTable();
+            try
+            {
+                _userDbService.CreateUsersTable();
+                Console.WriteLine("Create table success");
+            }
+            catch
+            {
+                Console.WriteLine("Create table Fail");
+                return NotFound("Create table Fail");
+            }
             return Ok();
         }
 
         [HttpPost("User")]
-        public ActionResult CreateUser(CreateUser createUser)
+        public ActionResult<User> CreateUser(CreateUser createUser)
         {
-            _userDbService.InsertUser(createUser);
-            return Ok();
+            User user = new();
+            try
+            {
+                user = _userDbService.InsertUser(createUser);
+                Console.WriteLine("Create user success");
+            }
+            catch
+            {
+                Console.WriteLine("Create user Fail");
+                return NotFound("Create user Fail");
+            }
+            return Ok(user);
         }
 
         [HttpGet("User")]
-        public ActionResult FindAllUser() => Ok(_userDbService.FindAllUsers());
+        public ActionResult<List<User>> FindAllUser()
+        {
+            List<User> users = new();
+            try
+            {
+                users = _userDbService.FindAllUsers();
+                Console.WriteLine("Find all user success");
+            }
+            catch
+            {
+                Console.WriteLine("Find all user fail");
+                return NotFound("Find all user fail");
+            }
+            return Ok(users);
+        }
 
         [HttpGet("User/{userName}")]
-        public ActionResult FindUser(string userName)
+        public ActionResult<User> FindUser(string userName)
         {
-            var user = _userDbService.FindUser(userName);
+            User user = new();
+            try
+            {
+                user = _userDbService.FindUser(userName);
+                Console.WriteLine("Find user success");
+            }
+            catch
+            {
+                Console.WriteLine("Find user fail");
+                return NotFound("Find user fail");
+            }
             return Ok(user);
         }
 
         [HttpDelete("User/{userName}")]
-        public ActionResult DeleteUser(string userName)
+        public ActionResult<User> DeleteUser(string userName)
         {
-            _userDbService.DeleteUser(userName);
-            return Ok();
+            User user = new();
+            try
+            {
+                user = _userDbService.DeleteUser(userName);
+                Console.WriteLine("Delete user success");
+            }
+            catch
+            {
+                Console.WriteLine("Delete user fail");
+                return NotFound("Delete user fail");
+            }
+            return Ok(user);
         }
     }
 }

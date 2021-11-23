@@ -33,11 +33,11 @@ namespace Login_Jwt_Sqlite.Services
                     $"CreatedAt TEXT)";
                 createTableCmd.ExecuteNonQuery();
             }
-            Console.WriteLine("Users Table Created!");
         }
 
-        public void InsertUser(CreateUser createUser)
+        public User InsertUser(CreateUser createUser)
         {
+            User user = new();
             using (var connection = new SqliteConnection(_connectionString))
             {
                 connection.Open();
@@ -56,8 +56,9 @@ namespace Login_Jwt_Sqlite.Services
                     insertUserCmd.ExecuteNonQuery();
                     transaction.Commit();
                 }
+                user = FindUser(createUser.UserName);
             }
-            Console.WriteLine($"User Inserted!: {createUser.UserName}, {createUser.Password}, {createUser.Remember}, {createUser.UserClaim}");
+            return user;
         }
 
         public User FindUser(string userName)
@@ -138,16 +139,19 @@ namespace Login_Jwt_Sqlite.Services
             return users;
         }
 
-        public void DeleteUser(string userName)
+        public User DeleteUser(string userName)
         {
+            User user = new();
             using (var connection = new SqliteConnection(_connectionString))
             {
                 connection.Open();
+                user = FindUser(userName);
+
                 var deleteCmd = connection.CreateCommand();
                 deleteCmd.CommandText = $"DELETE FROM {_userTableName} WHERE UserName = '{userName}'";
                 deleteCmd.ExecuteNonQuery();
             }
-            Console.WriteLine("User Deleted!");
+            return user;
         }
     }
 }
